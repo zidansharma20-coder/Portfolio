@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
         order: data.order || 0
       }
     })
+    revalidatePath('/')
     return NextResponse.json({ project })
   } catch (error: any) {
     console.error("Project creation error:", error)
@@ -50,6 +52,8 @@ export async function PUT(request: Request) {
       where: { id },
       data: updateData
     })
+    revalidatePath('/')
+    revalidatePath(`/work/${id}`)
     return NextResponse.json({ project })
   } catch (error) {
     return NextResponse.json({ error: "Failed to update project" }, { status: 500 })
@@ -69,6 +73,7 @@ export async function DELETE(request: Request) {
     await prisma.project.delete({
       where: { id }
     })
+    revalidatePath('/')
     return NextResponse.json({ success: true })
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete project" }, { status: 500 })

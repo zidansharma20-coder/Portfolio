@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
       })
     }
 
+    revalidatePath('/')
     return NextResponse.json({ profile })
   } catch (error) {
     return NextResponse.json({ error: "Failed to update profile" }, { status: 500 })

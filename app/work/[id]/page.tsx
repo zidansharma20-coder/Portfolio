@@ -7,6 +7,9 @@ import prisma from '@/lib/prisma'
 import { SiteNav } from '@/components/site-nav'
 import { SiteFooter } from '@/components/site-footer'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function ProjectPage({ params }: { params: { id: string } }) {
   // Try to find the project in the DB
   const project = await prisma.project.findUnique({

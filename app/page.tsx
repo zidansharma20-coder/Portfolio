@@ -11,6 +11,9 @@ import { ContactCta } from '@/components/contact-cta'
 import { SiteFooter } from '@/components/site-footer'
 import prisma from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function Page() {
   const dbProjects = await prisma.project.findMany({ orderBy: { order: 'asc' } })
   const profile = await prisma.profile.findFirst()
